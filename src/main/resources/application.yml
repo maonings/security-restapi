@@ -1,0 +1,29 @@
+# server容器配置
+server:
+  port: 8080
+
+spring:
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/restful-api-security?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: maoning
+    driver-class-name: com.mysql.jdbc.Driver
+
+# Mybatis配置
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.maoniya.restful.api.security.entity
+
+# JWT configure
+jwt:
+  # header名称
+  header: token
+  # token前缀
+  token-prefix: Bearer
+  # 私钥
+  secret-key: xxxzzzyyyqqq
+  # 有效期，单位：秒
+  expires-in: 7200
+
+
