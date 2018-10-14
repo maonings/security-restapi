@@ -1,1 +1,1 @@
-# 由SpringBoot + SpringSecurity + JWT开发，适用于RESTful API的权限框架
+# 使用SpringBoot + SpringSecurity + JWT 开发适配RESTful API的安全框架
