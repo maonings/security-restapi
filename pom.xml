@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.stoncle</groupId>
-	<artifactId>restful-api-security</artifactId>
+	<artifactId>security-restapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-	<name>restful-api-security</name>
-	<description>restful-api-security</description>
+	<name>security-restapi</name>
+	<description>Security framework for RESTFul API.</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
