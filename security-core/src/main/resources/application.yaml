@@ -1,0 +1,9 @@
+server:
+  port: 8090
+
+# JWT config
+jwt:
+  header: token
+  expires-in: 7200
+  token-prefix: Bearer
+  secret-key: 1234567890
