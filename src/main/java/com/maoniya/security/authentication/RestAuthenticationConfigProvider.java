@@ -1,37 +1,34 @@
-package com.maoniya.security.config;
+package com.maoniya.security.authentication;
 
-import com.maoniya.security.authentication.JsonParameterConvertFilter;
-import com.maoniya.security.authentication.JwtTokenAuthenticationFilter;
-import com.maoniya.security.core.DaoUserDetailsService;
+import com.maoniya.security.filter.JsonParameterConvertFilter;
+import com.maoniya.security.filter.JwtTokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.DelegatingMessageSource;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 /**
- * RestApiSecurityConfigAdapter.java
+ * describe:
  *
- * @author MaoNing
- * @version 1.0.0
- * @Date 2018/10/14 22:10
+ * @author maoniya.com
+ * @date 2018/10/19
  */
-@Configuration
-public class RestApiSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+@Component
+public class RestAuthenticationConfigProvider implements AuthenticationConfigProvider {
 
     @Autowired
-    private DaoUserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
@@ -51,13 +48,8 @@ public class RestApiSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    /**
-     * SpringSecurity基本配置，其中用到的四个自定义类作用可跟进类里面查看
-     * @param http
-     * @throws Exception
-     */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void config(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(jsonParameterConvertFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -69,19 +61,10 @@ public class RestApiSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
                     .successHandler(authenticationSuccessHandler)
                     .failureHandler(authenticationFailureHandler)
                     .and()
-                .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/login").permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
                 .csrf()
                     .disable()
-                .headers()
-                    .cacheControl()
-                    .disable()
-                    .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     /**
@@ -108,5 +91,4 @@ public class RestApiSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
         authenticationProvider.setMessageSource(new DelegatingMessageSource());
         return authenticationProvider;
     }
-
 }

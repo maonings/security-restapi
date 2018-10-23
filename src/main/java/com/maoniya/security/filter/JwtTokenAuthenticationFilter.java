@@ -1,8 +1,7 @@
-package com.maoniya.security.authentication;
+package com.maoniya.security.filter;
 
 import com.maoniya.security.config.JwtProperties;
 import com.maoniya.security.support.JsonWriter;
-import com.maoniya.security.core.DaoUserDetailsService;
 import com.maoniya.security.support.ResponseModel;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,13 +34,14 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     private JwtProperties jwtProperties;
 
     @Autowired
-    private DaoUserDetailsService daoUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String token = request.getHeader(this.jwtProperties.getHeader());
+        String tokenHeader = this.jwtProperties.getHeader();
+        String token = request.getHeader(tokenHeader);
         if (!StringUtils.isEmpty(token) && token.startsWith(this.jwtProperties.getTokenPrefix())) {
             UserDetails userDetails;
             try {
@@ -49,7 +50,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                         .parseClaimsJws(token.replace(this.jwtProperties.getTokenPrefix(), ""))
                         .getBody()
                         .getSubject();
-                userDetails = this.daoUserDetailsService.loadUserByUsername(sub);
+                userDetails = this.userDetailsService.loadUserByUsername(sub);
             } catch (Exception e) {
                 JsonWriter.write(response, ResponseModel.error(HttpStatus.BAD_REQUEST, "Invalid token.")); return;
             }

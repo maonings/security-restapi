@@ -1,4 +1,4 @@
-package com.maoniya.security.authentication;
+package com.maoniya.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * 重写AuthenticationEntryPoint，
  * 默认的AuthenticationEntryPoint会将用户重定向到登录页面。
- * 但是在REST设计中，只需返回认证结果，由请求发起者重新发起认证请求。
+ * 但是在REST设计中，只返回认证为通过结果，由UI引导用户重新认证。
  *
  * date:  Created in 2018/10/8 10:56
  *
@@ -28,7 +28,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException e)
             throws IOException {
-        JsonWriter.write(response, ResponseModel.error(HttpStatus.UNAUTHORIZED, "Authentication require."));
+        JsonWriter.write(response, ResponseModel.error(HttpStatus.UNAUTHORIZED, "Authentication is required."));
         return;
     }
 }
