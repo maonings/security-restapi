@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthorizeConfigManager authorizeConfigManager;
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     protected void configure(HttpSecurity http) throws Exception {
-        HttpSecurityWrap.create(http)
+        RestHttpSecurity.create(http)
                 .authorizeManager(authorizeConfigManager)
                 .authenticationManager(authenticationConfigManager);
     }

@@ -14,20 +14,20 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
 
-    private String header;
+    private String header = "token";
 
-    private String secretKey;
+    private String secretKey = "1234567890";
 
-    private Integer expiresIn;
+    private Integer expiresIn = 7200;
 
-    private String tokenPrefix;
+    private String tokenPrefix = "Bearer";
 
     public int getExpiresIn() {
-        return expiresIn;
+        return expiresIn * 1000;
     }
 
     public void setExpiresIn(int expiresIn) {
-        this.expiresIn = expiresIn * 1000;
+        this.expiresIn = expiresIn;
     }
 
     public String getHeader() {
@@ -57,10 +57,10 @@ public class JwtProperties {
     @Override
     public String toString() {
         return "JwtProperties{" +
-                "expiresIn=" + expiresIn +
-                ", header='" + header + '\'' +
-                ", tokenPrefix='" + tokenPrefix + '\'' +
-                ", secretKey='" + secretKey + '\'' +
+                "expiresIn=" + this.getExpiresIn() +
+                ", header='" + this.getHeader() + '\'' +
+                ", tokenPrefix='" + this.getTokenPrefix() + '\'' +
+                ", secretKey='" + this.getSecretKey() + '\'' +
                 '}';
     }
 }

@@ -10,25 +10,25 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
  * @author maoniya.com
  * @date 2018/10/22
  */
-public final class HttpSecurityWrap {
+public final class RestHttpSecurity {
 
     private HttpSecurity http;
 
-    private HttpSecurityWrap(HttpSecurity http) {
+    private RestHttpSecurity(HttpSecurity http) {
         this.http = http;
     }
 
-    public static HttpSecurityWrap create(HttpSecurity http) {
-        return new HttpSecurityWrap(http);
+    public static RestHttpSecurity create(HttpSecurity http) {
+        return new RestHttpSecurity(http);
     }
 
-    public HttpSecurityWrap authenticationManager(AuthenticationConfigManager authenticationConfigManager)
+    public RestHttpSecurity authenticationManager(AuthenticationConfigManager authenticationConfigManager)
             throws Exception {
         authenticationConfigManager.config(http);
         return this;
     }
 
-    public HttpSecurityWrap authorizeManager(AuthorizeConfigManager authorizeConfigManager)
+    public RestHttpSecurity authorizeManager(AuthorizeConfigManager authorizeConfigManager)
             throws Exception {
         authorizeConfigManager.config(http.authorizeRequests());
         return this;

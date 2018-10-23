@@ -17,7 +17,7 @@ public class RbacAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        config.anyRequest().access("@rbacServiceImpl.hasPermission(request, authentication)");
+        config.anyRequest().access("@authorizeService.hasPermission(request, authentication)");
         return true;
     }
 }
