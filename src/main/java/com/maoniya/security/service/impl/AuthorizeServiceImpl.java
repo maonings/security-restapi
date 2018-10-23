@@ -4,7 +4,9 @@ import com.maoniya.security.authorize.AuthorizeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,12 +24,27 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         logger.info("The default authorizeService has init.");
     }
 
+    private AntPathMatcher antPathMatcher = new AntPathMatcher();
+
     @Override
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
+        String uri = request.getRequestURI();
         if (user != null) {
-            System.out.println(user);
-            return true;
+            if (antPathMatcher.match("/hello", uri)) {
+                for (GrantedAuthority authority : user.getAuthorities()) {
+                    if ("user".equals(authority.getAuthority())) {
+                        return true;
+                    }
+                }
+            }
+            if (antPathMatcher.match("/users", uri)) {
+                for (GrantedAuthority authority : user.getAuthorities()) {
+                    if ("admin".equals(authority.getAuthority())) {
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }

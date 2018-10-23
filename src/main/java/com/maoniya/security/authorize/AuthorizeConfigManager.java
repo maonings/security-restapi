@@ -15,8 +15,8 @@ public interface AuthorizeConfigManager {
 
     /**
      * 配置授权规则
-     * @param config
+     * @param http
      */
-    void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) throws Exception;
+    void config(HttpSecurity http) throws Exception;
 
 }

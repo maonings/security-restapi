@@ -1,8 +1,10 @@
 package com.maoniya.security.authorize;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,9 +17,18 @@ import org.springframework.stereotype.Component;
 @Order(Integer.MAX_VALUE - 8)
 public class RbacAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
     @Override
-    public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        config.anyRequest().access("@authorizeService.hasPermission(request, authentication)");
+    public boolean config(HttpSecurity http) throws Exception {
+        http
+                .exceptionHandling()
+                    .accessDeniedHandler(accessDeniedHandler)
+                    .and()
+                .authorizeRequests()
+                    .anyRequest()
+                    .access("@authorizeService.hasPermission(request, authentication)");
         return true;
     }
 }

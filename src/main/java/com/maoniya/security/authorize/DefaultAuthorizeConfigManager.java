@@ -21,10 +21,10 @@ public class DefaultAuthorizeConfigManager implements AuthorizeConfigManager {
     private List<AuthorizeConfigProvider> authorizeConfigProviders;
 
     @Override
-    public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) throws Exception {
+    public void config(HttpSecurity http) throws Exception {
         boolean existAnyRequestConfig = false;
         for (AuthorizeConfigProvider provider : authorizeConfigProviders) {
-            boolean currentIsAnyRequestConfig = provider.config(config);
+            boolean currentIsAnyRequestConfig = provider.config(http);
             if (existAnyRequestConfig && currentIsAnyRequestConfig) {
                 throw new RuntimeException("重复的anyRequest配置: " +  provider.getClass().getSimpleName());
             } else if (currentIsAnyRequestConfig) {
@@ -32,7 +32,7 @@ public class DefaultAuthorizeConfigManager implements AuthorizeConfigManager {
             }
         }
         if (!existAnyRequestConfig) {
-            config.anyRequest().authenticated();
+            http.authorizeRequests().anyRequest().authenticated();
         }
     }
 }

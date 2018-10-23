@@ -30,7 +30,7 @@ public final class RestHttpSecurity {
 
     public RestHttpSecurity authorizeManager(AuthorizeConfigManager authorizeConfigManager)
             throws Exception {
-        authorizeConfigManager.config(http.authorizeRequests());
+        authorizeConfigManager.config(http);
         return this;
     }
 }

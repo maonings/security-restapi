@@ -41,6 +41,6 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
         response.addHeader(jwtProperties.getHeader(), jwtProperties.getTokenPrefix() + " " + token);
-        JsonWriter.write(response, ResponseModel.ok(authentication.getPrincipal()));
+        JsonWriter.write(response, ResponseModel.ok("认证成功"));
     }
 }
