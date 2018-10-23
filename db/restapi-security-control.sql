@@ -4,7 +4,7 @@ set charset utf8;
 CREATE DATABASE IF NOT EXISTS restapi_security_control default charset utf8 COLLATE utf8_general_ci;
 use restapi_security_control;
 
-# 系统用户表，更多字段根据具体业务自行扩展
+# 系统用户表,更多字段根据具体业务自行扩展
 create table IF NOT EXISTS sys_user (
 	id int primary key auto_increment,
 	username varchar(20) UNIQUE KEY not null comment '登录用户名',
@@ -42,7 +42,7 @@ create table IF NOT EXISTS sys_relation_role_permission (
 	permission_id int not null
 ) ENGINE = INNODB;
 
-# 资源表（树结构）
+# 资源表(树结构)
 create table IF NOT EXISTS sys_resource (
 	id int primary key AUTO_INCREMENT,
 	pid int comment '父节点，null代表根节点',
